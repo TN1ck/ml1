@@ -32,6 +32,7 @@ top=2.0cm, bottom=2.0cm]{geometry}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\A}{\mathcal{A}}
 \newcommand{\R}{\mathbb{R}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 \usepackage{mathpazo}
 
 \author{Tom Nick, Niklas Gebauer, Felix Bohmann}
@@ -48,34 +49,62 @@ Felix Bohmann\> xxxxxx
 \end{tabbing}
 
 \subsection*{Exercise 1}
+\subsubsection*{a)}
 \begin{align}
-	P(error) &= \int P(error\mid x)p(x) dx \\
-	P(error\mid x) &= \min (P(w_1\mid x), P(w_2\mid x))
+	P(error) &= \int P(error\mid x)p(x) dx \label{eq1} \\
+	P(error\mid x) &= \min (P(w_1\mid x), P(w_2\mid x)) \label{eq2}
 \end{align}
 
 With these equations, we want to show that
 
 \begin{align}
-	P(error) \le \int \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} p(x) dx
+	P(error) \le \int \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} p(x) dx \label{eq3}
 \end{align}
 
-At first, without restricting the general case, we assume that $P(w_1 \mid x) \ge P(w_2 \mid x)$, that is the function $P(error \mid x) = P(w_2 \mid x)$. Now with $(1), (2)$ and $(3)$ we have:
+At first, without restricting the general case, we assume that $P(w_1 \mid x) \ge P(w_2 \mid x) \label{ass1}$, that is the function $P(error \mid x) = P(w_2 \mid x)$. Now with \eqref{eq1}, \eqref{eq2} and \eqref{eq3} we have:
 
-\begin{align}
+\begin{align*}
 	\int P(w_2 \mid x)p(x) dx \le \int \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} p(x) dx
-\end{align}
+\end{align*}
 
 Because both sides are integrating over the same variable we can simplify the term to:
-\begin{align}
+\begin{align*}
 	&P(w_2 \mid x)p(x) \le \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} p(x) \\
 	&\Leftrightarrow \frac{1}{P(w_2 \mid x)p(x)} \ge \frac{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}}{2} p(x) \\
 	&\Leftrightarrow \frac{1}{P(w_2 \mid x)} \ge \frac{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}}{2} \\
 	&\Leftrightarrow \frac{2}{P(w_2 \mid x)} \ge \frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}  \\
 	&\Leftrightarrow \frac{1}{P(w_2 \mid x)} \ge \frac{1}{P(w_1\mid x)} \\
 	&\Leftrightarrow P(w_2 \mid x) \le P(w_1\mid x)
+\end{align*}
+
+This holds true with the assumptions \ref{ass1} we made earlier.
+
+\subsubsection*{b)}
+
+With this result, we now show that:
+
+\begin{align*}
+P(error) \le \frac{2P(w_1)P(w_2)}{\sqrt{P(w_1)^2 + (4\mu^2 + 2)P(w_1)P(w_2) + P(w_2)^2}}
+\end{align*}
+
+While using the univariate probability distribution:
+$$p(x\mid w_1) = \frac{\pi^{-1}}{1+ (x - \mu)^2} \textrm{ and } p(x \mid w_2) = \frac{\pi^{-1}}{1 + (x + \mu)^2}$$
+
+With the rule of bayes we have $P(w_1 \mid x) = \frac{p(x \mid w_1)P(w_1)}{p(x)}$:
+
+\begin{align}
+	P(error) &\le \int \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} p(x) dx \\
+	\Leftrightarrow P(error) &\le \int \frac{2}{\frac{1}{ \frac{p(x \mid w_1)P(w_1)}{p(x)} } + \frac{1}{\frac{p(x \mid w_2)P(w_2)}{p(x)}}} p(x) dx \\
+	\Leftrightarrow P(error) &\le \int \frac{2}{\frac{p(x)}{p(x \mid w_1)P(w_1)} + \frac{p(x)}{p(x \mid w_2)P(w_2)}} p(x) dx \\
+	\Leftrightarrow P(error) &\le \int \frac{2}{\frac{1}{p(x \mid w_1)P(w_1)} + \frac{1}{p(x \mid w_2)P(w_2)}}dx \\
+	\Leftrightarrow P(error) &\le \int \frac{2}{\frac{1}{ \frac{\pi^{-1}}{1+ (x - \mu)^2} P(w_1)} + \frac{1}{ \frac{\pi^{-1}}{1 + (x + \mu)^2} P(w_2)}}dx \\
+	\Leftrightarrow P(error) &\le \int \frac{2}{\frac{1}{ \frac{\pi^{-1} P(w_1)}{1+ (x - \mu)^2}} + \frac{1}{ \frac{\pi^{-1} P(w_2)}{1 + (x + \mu)^2}}}dx \\
+	\Leftrightarrow P(error) &\le \int \frac{2}{\frac{1+ (x - \mu)^2}{\pi^{-1} P(w_1)} +  \frac{1 + (x + \mu)^2}{\pi^{-1} P(w_2)}}dx \\
 \end{align}
 
-This holds true with the assumptions we made earlier.
+
+
+
 
 
 
