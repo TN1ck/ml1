@@ -68,13 +68,21 @@ At first, without restricting the general case, we assume that $P(w_1 \mid x) \g
 \end{align*}
 
 Because both sides are integrating over the same variable we can simplify the term to:
-\begin{align*}
+%\begin{align*}
+%	&P(w_2 \mid x)p(x) \le \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} p(x) \\
+%	&\Leftrightarrow \frac{1}{P(w_2 \mid x)p(x)} \ge \frac{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}}{2} p(x) \\
+%	&\Leftrightarrow \frac{1}{P(w_2 \mid x)} \ge \frac{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}}{2} \\
+%	&\Leftrightarrow \frac{2}{P(w_2 \mid x)} \ge \frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}  \\
+%	&\Leftrightarrow \frac{1}{P(w_2 \mid x)} \ge \frac{1}{P(w_1\mid x)} \\
+%	&\Leftrightarrow P(w_2 \mid x) \le P(w_1\mid x)
+
+\begin{align*}	
 	&P(w_2 \mid x)p(x) \le \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} p(x) \\
-	&\Leftrightarrow \frac{1}{P(w_2 \mid x)p(x)} \ge \frac{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}}{2} p(x) \\
-	&\Leftrightarrow \frac{1}{P(w_2 \mid x)} \ge \frac{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}}{2} \\
-	&\Leftrightarrow \frac{2}{P(w_2 \mid x)} \ge \frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}  \\
-	&\Leftrightarrow \frac{1}{P(w_2 \mid x)} \ge \frac{1}{P(w_1\mid x)} \\
-	&\Leftrightarrow P(w_2 \mid x) \le P(w_1\mid x)
+	&\Leftrightarrow P(w_2 \mid x) \le \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} \\
+	&\Leftrightarrow (\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}) P(w_2 \mid x) \le 2 \\
+	&\Leftrightarrow \frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)} \le \frac{2}{P(w_2 \mid x)} \\
+	&\Leftrightarrow \frac{1}{P(w_1 \mid x)} \le \frac{1}{P(w_2\mid x)} \\
+	&\Leftrightarrow P(w_1 \mid x) \ge P(w_2\mid x)
 \end{align*}
 
 This holds true with the assumptions \ref{ass1} we made earlier.
@@ -92,7 +100,7 @@ $$p(x\mid w_1) = \frac{\pi^{-1}}{1+ (x - \mu)^2} \textrm{ and } p(x \mid w_2) = 
 
 With the rule of bayes we have $P(w_1 \mid x) = \frac{p(x \mid w_1)P(w_1)}{p(x)}$:
 
-\begin{align}
+\begin{align*}
 	P(error) &\le \int \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} p(x) dx \\
 	\Leftrightarrow P(error) &\le \int \frac{2}{\frac{1}{ \frac{p(x \mid w_1)P(w_1)}{p(x)} } + \frac{1}{\frac{p(x \mid w_2)P(w_2)}{p(x)}}} p(x) dx \\
 	\Leftrightarrow P(error) &\le \int \frac{2}{\frac{p(x)}{p(x \mid w_1)P(w_1)} + \frac{p(x)}{p(x \mid w_2)P(w_2)}} p(x) dx \\
@@ -100,7 +108,48 @@ With the rule of bayes we have $P(w_1 \mid x) = \frac{p(x \mid w_1)P(w_1)}{p(x)}
 	\Leftrightarrow P(error) &\le \int \frac{2}{\frac{1}{ \frac{\pi^{-1}}{1+ (x - \mu)^2} P(w_1)} + \frac{1}{ \frac{\pi^{-1}}{1 + (x + \mu)^2} P(w_2)}}dx \\
 	\Leftrightarrow P(error) &\le \int \frac{2}{\frac{1}{ \frac{\pi^{-1} P(w_1)}{1+ (x - \mu)^2}} + \frac{1}{ \frac{\pi^{-1} P(w_2)}{1 + (x + \mu)^2}}}dx \\
 	\Leftrightarrow P(error) &\le \int \frac{2}{\frac{1+ (x - \mu)^2}{\pi^{-1} P(w_1)} +  \frac{1 + (x + \mu)^2}{\pi^{-1} P(w_2)}}dx \\
+		\Leftrightarrow P(error) &\le \int \frac{2}{\frac{(1+ (x - \mu)^2) P(w_2)}{\pi^{-1} P(w_1) P(w_2)} +  \frac{(1 + (x + \mu)^2) P(w_1)}{\pi^{-1} P(w_2) P(w_1)}}dx \\
+		\Leftrightarrow P(error) &\le \int \frac{2 \pi^{-1} P(w_2) P(w_1)}{(1+ (x + \mu)^2) P(w_1) + (1 + (x - \mu)^2) P(w_2)}dx \\
+		\Leftrightarrow P(error) &\le \int \frac{2 \pi^{-1} P(w_2) P(w_1)}{(x^2 + 2x\mu +\mu^2 +1) P(w_1) + (x^2 - 2x\mu +\mu^2 +1) P(w_2)}dx \\
+		\Leftrightarrow P(error) &\le \int \frac{2 \pi^{-1} P(w_2) P(w_1)}{(P(w_1)+P(w_2))x^2 + (P(w_1)-P(w_2))2\mu x + (P(w_1)\mu^2 + P(w_2)\mu^2+P(w1)+P(w_2))}dx \\
+\end{align*}
+
+We can now take out the numerator of the integral and use the following equation:
+
+\begin{align}
+\int \frac{1}{ax^2+bx+c}dx = \frac{2\pi}{\sqrt{4ac-b^2}}
 \end{align}
+
+with:
+
+\begin{align*}
+a &= P(w_1)+P(w_2) \\
+b &= (P(w_1)-P(w_2))2\mu \\
+c &= P(w_1)\mu^2 + P(w_2)\mu^2+P(w1)+P(w_2) \\
+\end{align*}
+
+because
+
+\begin{align*}
+    b^2 &< 4ac \\
+    \Leftrightarrow 0 &< 4ac-b^2 \\
+    \Leftrightarrow 0 &< 4(P(w_1)+P(w_2))(P(w_1)\mu^2 + P(w_2)\mu^2+P(w1)+P(w_2))-((P(w_1)-P(w_2))2\mu)^2 \\
+    \Leftrightarrow 0 &< 4P(w_1)^2\mu^2 + 4P(w_1)P(w_2)\mu^2+4P(w_1)^2+4P(w_1)P(w_2) \\
+    &+ 4P(w_1)P(w_2)\mu^2+4P(w_2)^2\mu^2+ 4P(w_2)P(w_1)+4P(w_2)^2 \\
+    &- (4P(w_1)^2\mu^2-8P(w_1)P(w_2)\mu^2+4P(w_2)^2\mu^2) \\
+    \Leftrightarrow 0 &< 16P(w_1)P(w_2)\mu^2+8P(w_1)P(w_2)+4P(w_1)^2+4P(w_2)^2 \\
+\end{align*}
+
+and this holds since $P(w_1), P(w_2) \in [0,1]$ and $P(w_1) + P(w_2) = 1$.\\
+We now already calculated $4ac-b^2$ in the steps before and just need to use $(4)$ to proceed where we stopped before introducing equation 4:
+
+\begin{align*}
+    \Leftrightarrow P(error) &\le \int \frac{2 \pi^{-1} P(w_2) P(w_1)}{(P(w_1)+P(w_2))x^2 + (P(w_1)-P(w_2))2\mu x + (P(w_1)\mu^2 + P(w_2)\mu^2+P(w1)+P(w_2))}dx \\
+    \Leftrightarrow P(error) &\le 2 \pi^{-1} P(w_2) P(w_1) \frac{2\pi}{\sqrt{16P(w_1)P(w_2)\mu^2+8P(w_1)P(w_2)+4P(w_1)^2+4P(w_2)^2}} \\
+    \Leftrightarrow P(error) &\le \frac{4 P(w_1) P(w_2) }{\sqrt{4((4\mu^2+2)P(w_1)P(w_2)+P(w_1)^2+P(w_2)^2)}} \\
+    \Leftrightarrow P(error) &\le \frac{4 P(w_1) P(w_2) }{\sqrt{4}\sqrt{((4\mu^2+2)P(w_1)P(w_2)+P(w_1)^2+P(w_2)^2)}} \\
+    \Leftrightarrow P(error) &\le \frac{2 P(w_1) P(w_2) }{\sqrt{P(w_1)^2+(4\mu^2+2)P(w_1)P(w_2)+P(w_2)^2}} \\
+\end{align*}
 
 
 
