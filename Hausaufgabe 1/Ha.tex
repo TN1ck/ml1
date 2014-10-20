@@ -1,0 +1,82 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\setlength{\parindent}{0cm}
+\usepackage{setspace}
+\usepackage{mathpazo}
+\usepackage{graphicx}
+\usepackage{wasysym} 
+\usepackage{booktabs}
+\usepackage{verbatim}
+\usepackage{microtype}
+\usepackage{siunitx}
+\usepackage{cleveref}
+\usepackage[colorlinks=false, pdfborder={0 0 0}]{hyperref}
+\usepackage{paralist}
+\usepackage{pst-all}
+\usepackage{pstricks}
+\usepackage{pst-node}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+\usetikzlibrary{trees,petri,decorations,arrows,automata,shapes,shadows,positioning,plotmarks}
+\usepackage[a4paper,
+left=3.0cm, right=3.0cm,
+top=2.0cm, bottom=2.0cm]{geometry}
+\usepackage{fullpage}
+\usepackage[german]{babel}
+%\usepackage{pst-all}
+%\usepackage{pstricks}
+\setlength{\unitlength}{1cm}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\R}{\mathbb{R}}
+\usepackage{mathpazo}
+
+\author{Tom Nick, Niklas Gebauer, Felix Bohmann}
+\title{Machine Learning}
+\begin{document}
+\begin{center}
+\Large{\textsc{Machine Learning 1: Assignment 1}} \\
+\end{center}
+
+\begin{tabbing}
+Tom Nick \hspace{0.9cm}\= 340528\\
+Niklas Gebauer\>  xxxxx \\
+Felix Bohmann\> xxxxxx
+\end{tabbing}
+
+\subsection*{Exercise 1}
+\begin{align}
+	P(error) &= \int P(error\mid x)p(x) dx \\
+	P(error\mid x) &= \min (P(w_1\mid x), P(w_2\mid x))
+\end{align}
+
+With these equations, we want to show that
+
+\begin{align}
+	P(error) \le \int \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} p(x) dx
+\end{align}
+
+At first, without restricting the general case, we assume that $P(w_1 \mid x) \ge P(w_2 \mid x)$, that is the function $P(error \mid x) = P(w_2 \mid x)$. Now with $(1), (2)$ and $(3)$ we have:
+
+\begin{align}
+	\int P(w_2 \mid x)p(x) dx \le \int \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} p(x) dx
+\end{align}
+
+Because both sides are integrating over the same variable we can simplify the term to:
+\begin{align}
+	&P(w_2 \mid x)p(x) \le \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} p(x) \\
+	&\Leftrightarrow \frac{1}{P(w_2 \mid x)p(x)} \ge \frac{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}}{2} p(x) \\
+	&\Leftrightarrow \frac{1}{P(w_2 \mid x)} \ge \frac{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}}{2} \\
+	&\Leftrightarrow \frac{2}{P(w_2 \mid x)} \ge \frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}  \\
+	&\Leftrightarrow \frac{1}{P(w_2 \mid x)} \ge \frac{1}{P(w_1\mid x)} \\
+	&\Leftrightarrow P(w_2 \mid x) \le P(w_1\mid x)
+\end{align}
+
+This holds true with the assumptions we made earlier.
+
+
+
+\end{document}
