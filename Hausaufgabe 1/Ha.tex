@@ -44,8 +44,7 @@ top=2.0cm, bottom=2.0cm]{geometry}
 
 \begin{tabbing}
 Tom Nick \hspace{0.9cm}\= 340528\\
-Niklas Gebauer\>  xxxxx \\
-Felix Bohmann\> xxxxxx
+Niklas Gebauer\>  340942 
 \end{tabbing}
 
 \subsection*{Exercise 1}
@@ -61,7 +60,7 @@ With these equations, we want to show that
 	P(error) \le \int \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} p(x) dx \label{eq3}
 \end{align}
 
-At first, without restricting the general case, we assume that $P(w_1 \mid x) \ge P(w_2 \mid x) \label{ass1}$, that is the function $P(error \mid x) = P(w_2 \mid x)$. Now with \eqref{eq1}, \eqref{eq2} and \eqref{eq3} we have:
+At first, without restricting the general case, we assume that $P(w_1 \mid x) \ge P(w_2 \mid x) \label{ass1}$, that is the function $P(error \mid x) = P(w_2 \mid x)$. Now with $(1)$, $(2)$ and $(3)$ we have:
 
 \begin{align*}
 	\int P(w_2 \mid x)p(x) dx \le \int \frac{2}{\frac{1}{P(w_1\mid x)} + \frac{1}{P(w_2 \mid x)}} p(x) dx
@@ -154,7 +153,11 @@ We now already calculated $4ac-b^2$ in the steps before and just need to use $(4
 \subsubsection*{c)}
 According to informations form chapter 2.8 in Pattern Classification:
 
-For both case we can find the upper-bound numericaly via the Chernoff Bound or the Bhattacharyya Bound, this may lead to a tighter upper bound than the analytical version, which is even harder to approximate due to the discontinues nature of the integrals. For the high-dimensional space the Bhattacharyya Bound might be better, because it is computationally less expensive that the Chernoff Bound.
+For both cases we can find the upper-bound numericaly via the Chernoff Bound or the Bhattacharyya Bound, this may lead to a tighter upper bound than the analytical version, which is even harder to approximate due to the discontinues nature of the integrals. For the high-dimensional space the Bhattacharyya Bound might be better, because it is computationally less expensive than the Chernoff Bound.
+
+Besides from that, it's possible to compute an approximation if we have a data-set that is large (in terms of datapoints, not dimensions) enough to contain the class characteristics. We could use for example nested cross validation to compute and evaluate multiple classifiers with different parameters and then take the mean error (on the test set) as the approximation. This is especially practical for low dimensional data but becomes computationally expensive if the number of dimensions grows, because the number of possible decision boundaries grows and the need of data to cover the classes characteristics even grows exponentially.
+
+For high dimensional data one could try to estimate the prior by analyzing the dataset and use the smaller prior as an approximation of the error. But this would rather be the highest error a classifier should have, since only picking the class with the higher prior should yield the approximated error rate. So this would almost always be a poor approximation for the bayes error, but at least give a lower bound of the error that a classifier should produce.
 
 \subsection*{Exercise 2}
 \subsubsection*{a)}
@@ -173,31 +176,55 @@ To get the optimal decision boundary we have to solve $P(w_1\mid x) = P(w_2 \mid
 &\Leftrightarrow & \ln\left(\frac{P(w_1)}{P(w_2)}\right) &= \frac{\mid x - \mu \mid - \mid x + \mu \mid}{\sigma} \\
 &\Leftrightarrow & \sigma\ln\left(\frac{P(w_1)}{P(w_2)}\right) &= \mid x - \mu \mid - \mid x + \mu \mid
 \end{align*}
-There are now 3 cases to look at:
+There are now 4 cases to look at:
 \begin{enumerate}
-	\item $x \le \mu$ and $-x \le \mu$ \\
+	\item $x < \mu$ and $-x < \mu$ \\
 		\begin{align*}
 			\sigma\ln\left(\frac{P(w_1)}{P(w_2)}\right) &= -(x - \mu) - (x + \mu ) \\
 			&= -2x \\
 			- \frac{\sigma}{2}\ln\left(\frac{P(w_1)}{P(w_2)}\right) &= x
 		\end{align*}
-	\item $x \le \mu$ and $-x > \mu$ \\
+	\item $x > \mu$ and $-x > \mu$ \\
 		\begin{align*}
-			\sigma\ln\left(\frac{P(w_1)}{P(w_2)}\right) &= -(x - \mu) + (x + \mu ) \\
+			\sigma\ln\left(\frac{P(w_1)}{P(w_2)}\right) &= x - \mu + x + \mu \\
+			&= 2x \\
+			\frac{\sigma}{2}\ln\left(\frac{P(w_1)}{P(w_2)}\right) &= x
+		\end{align*}		
+		
+	\item $x \le \mu$ and $-x \geq \mu$ \\
+		\begin{align*}
+			\sigma\ln\left(\frac{P(w_1)}{P(w_2)}\right) &= -(x - \mu) + x + \mu \\
 			&= 2\mu
 		\end{align*}
-	\item $x > \mu$ \\
+	\item $x \geq \mu$ and $-x \le \mu$ \\
 		\begin{align*}
 			\sigma\ln\left(\frac{P(w_1)}{P(w_2)}\right) &= (x - \mu) - (x + \mu ) \\
 			&= -2\mu
 		\end{align*}
 \end{enumerate}
+
+Equations $(3)$ and $(4)$ tell us, that the boundary must lie between the mean of both classes (there is no boundary for the range of $x$ outside of that). The first equation gives us the boundary if we have $\mu > 0$ and the second one if we have $\mu < 0$.
+
 \subsubsection*{b)}
-To satisfy the constrain of $P(w_2 \mid x) = P(error \mid x)$, $P(w_1 \mid x)$ must contain $P(w_2 \mid x)$. Visually it would mean that the area of the curve of $P(w_2 \mid x)$ is completly included inside the area of the curve of $P(w_1 \mid x)$. When varying the mean $\mu$, both curves move away from each other, which means it always has to stay 0, else it's not possible to satisfy the constrain. The scale $\sigma$ can take any value that is larger than zero, it has the same effect on both distributions. $P(w_1)$ must always be larger than $P(w_2)$ (or else $P(w_1 \mid x)$ can't contain $P(w_2 \mid x)$).
+To satisfy the constrain of $P(w_2 \mid x) = P(error \mid x)$ for all $x$, $w_1$ and $w_2$ must have the same density functions and thus
+\begin{align*}
+    P(x \mid w_1) = P(x \mid w_2)
+\end{align*}
+Visually it would mean that the area of the curve of $P(x \mid w_2)$ is completly included inside the area of the curve of $P(x \mid w_1)$.
+When varying the mean $\mu$, both curves move away from each other, which means it always has to stay 0, else it's not possible to satisfy the constraint. The scale $\sigma$ can take any value that is larger than zero, since it has the same effect on both distributions. $P(w_1)$ must always be larger than $P(w_2)$ (or else $P(w_1 \mid x) \le P(w_2 \mid x)$ for some $x$ and so $P(error \mid x) \not = P(w_2 \mid x)$ for some $x$):
+
+\begin{align*}
+P(error \mid x) &= P(w_2 \mid x)\\
+\Leftrightarrow P(w_2 \mid x) &= min[P(w_1 \mid x),P(w_2 \mid x)] \\
+\Leftrightarrow P(w_2 \mid x) &< P(w_1 \mid x) \\
+\Leftrightarrow \frac{P(x \mid w_2)P(w_2)}{P(x)} &< \frac{P(x \mid w_1)P(w_1)}{P(x)} \\
+\Leftrightarrow P(x \mid w_2)P(w_2) &< P(x \mid w_1)P(w_1) \\
+\Leftrightarrow P(w_2) &< P(w_1) \\
+\end{align*}
 
 Formally all possible value-tuples are:
 
-$$\{ (P(w_1), P(w_2), \mu, \sigma) \mid P(w_1) \ge P(w_2) \land \mu = 0 \land \sigma \in \R^+ \}$$
+$$\{ (P(w_1), P(w_2), \mu, \sigma) \mid P(w_1) > P(w_2) \land \mu = 0 \land \sigma \in \R^+ \}$$
 
 \subsubsection*{c)}
 The data is generated by the univariate Gaussian Distrubution:
@@ -208,10 +235,18 @@ To get the optimal decision boundary we have to solve $P(w_1\mid x) = P(w_2 \mid
 &\Leftrightarrow &\frac{p(x \mid w_1)P(w_1)}{p(x)} &= \frac{p(x \mid w_2)P(w_2)}{p(x)} \\
 &\Leftrightarrow &\frac{1}{\sigma\sqrt{2\pi}}\exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)P(w_1) &= \frac{1}{\sigma\sqrt{2\pi}}\exp\left(-\frac{(x + \mu)^2}{2\sigma^2}\right)P(w_2) \\
 &\Leftrightarrow &\exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)P(w_1) &= \exp\left(-\frac{(x + \mu)^2}{2\sigma^2}\right)P(w_2) \\
+&\Leftrightarrow &-\frac{(x - \mu)^2}{2\sigma^2} + \ln\left(P(w_1)\right) &= -\frac{(x + \mu)^2}{2\sigma^2} + \ln\left(P(w_2)\right) \\
+&\Leftrightarrow &\ln\left(\frac{P(w_1)}{P(w_2}\right) &= \frac{(x - \mu)^2 - (x + \mu)^2}{2\sigma^2}\\
 &\Leftrightarrow &2\sigma^2\ln\left(\frac{P(w_1)}{P(w_2)}\right) &= x^2 - 2x\mu + \mu^2 - x^2 - 2x\mu - \mu^2 \\
 &\Leftrightarrow &2\sigma^2\ln\left(\frac{P(w_1)}{P(w_2)}\right) &= -4x\mu \\
 &\Leftrightarrow &\frac{2\sigma^2}{-4\mu}\ln\left(\frac{P(w_1)}{P(w_2)}\right) &= x
 \end{align*}
+
+These are the optimal decision boundaries under the restriction that $\mu \not = 0$, which leads us to the second part of the exercise.
+
+Just as in case of the Laplacian distribution, the mean $\mu$ has to be zero and $P(w_1)$ has to be larger than $P(w_2)$ in order that $P(error \mid x) = P(w_2 \mid x)$ for all $x$. Again we can obtain these possible value tuples:
+
+$$\{ (P(w_1), P(w_2), \mu, \sigma) \mid P(w_1) > P(w_2) \land \mu = 0 \land \sigma \in \R^+ \}$$
 
 
 
