@@ -1,0 +1,77 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\setlength{\parindent}{0cm}
+\usepackage{setspace}
+\usepackage{mathpazo}
+\usepackage{graphicx}
+\usepackage{wasysym} 
+\usepackage{booktabs}
+\usepackage{enumerate}
+\usepackage{verbatim}
+\usepackage{microtype}
+\usepackage{siunitx}
+\usepackage{cleveref}
+\usepackage[colorlinks=false, pdfborder={0 0 0}]{hyperref}
+\usepackage{paralist}
+\usepackage{pst-all}
+\usepackage{pstricks}
+\usepackage{pst-node}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+\usetikzlibrary{trees,petri,decorations,arrows,automata,shapes,shadows,positioning,plotmarks}
+\usepackage[a4paper,
+left=3.0cm, right=3.0cm,
+top=2.0cm, bottom=2.0cm]{geometry}
+\usepackage{fullpage}
+\usepackage[german]{babel}
+%\usepackage{pst-all}
+%\usepackage{pstricks}
+\setlength{\unitlength}{1cm}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\usepackage{mathpazo}
+
+\author{Tom Nick, Niklas Gebauer, Felix Bohmann}
+\title{Machine Learning}
+\begin{document}
+\begin{center}
+\Large{\textsc{Machine Learning 1: Assignment 2}} \\
+\end{center}
+
+\begin{tabbing}
+Tom Nick \hspace{0.9cm}\= 340528\\
+Niklas Gebauer\>  340942 
+\end{tabbing}
+
+\subsection*{Exercise 1}
+\begin{enumerate}[(a)]
+\item 
+With the definition $P(x_k \mid \sigma)$:
+$$P(x \mid \sigma) = \begin{cases} \sigma &\text{if} x = \text{head}\quad \\ 1 - sigma &\text{if}\quad x = \text{tail} \end{cases}$$
+We can state the likelihood function $P(\D \mid \sigma)$:
+\begin{align*}
+	P(\D \mid \sigma) &= \prod_{k = i}^{n} P(x_k \mid \sigma) \\
+	&= \sigma^5 \cdot (1 - \sigma)^2
+\end{align*}
+\item
+The maximum likelihood solution for $\sigma$ is simply the sample mean:
+$$\sigma = \frac{\#\{ x = \text{head} \mid x \in D\}}{\#(D)} = \frac{5}{7}$$
+\end{enumerate}
+With this we can compute $P(x_8 = \text{head} ,\quad x_9 = \text{head} \mid \sigma)$:
+\begin{align*}
+P(x_8 = \text{head} ,\quad x_9 = \text{head} \mid \sigma) = P(x_8 = \text{head} \mid \sigma)P(x_9 = \text{head} \mid \sigma) = \sigma^2 = \frac{25}{49} = 0.51
+\end{align*}
+
+
+
+
+
+
+
+\end{document}
