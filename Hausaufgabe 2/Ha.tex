@@ -53,7 +53,7 @@ Niklas Gebauer\>  340942
 \begin{enumerate}[(a)]
 \item 
 With the definition $P(x_k \mid \sigma)$:
-$$P(x \mid \sigma) = \begin{cases} \sigma &\text{if} x = \text{head}\quad \\ 1 - sigma &\text{if}\quad x = \text{tail} \end{cases}$$
+$$P(x \mid \sigma) = \begin{cases} \sigma &\text{if} x = \text{head}\quad \\ 1 - \sigma &\text{if}\quad x = \text{tail} \end{cases}$$
 We can state the likelihood function $P(\D \mid \sigma)$:
 \begin{align*}
 	P(\D \mid \sigma) &= \prod_{k = i}^{n} P(x_k \mid \sigma) \\
@@ -62,12 +62,19 @@ We can state the likelihood function $P(\D \mid \sigma)$:
 \item
 The maximum likelihood solution for $\sigma$ is simply the sample mean:
 $$\sigma = \frac{\#\{ x = \text{head} \mid x \in D\}}{\#(D)} = \frac{5}{7}$$
-\end{enumerate}
 With this we can compute $P(x_8 = \text{head} ,\quad x_9 = \text{head} \mid \sigma)$:
 \begin{align*}
 P(x_8 = \text{head} ,\quad x_9 = \text{head} \mid \sigma) = P(x_8 = \text{head} \mid \sigma)P(x_9 = \text{head} \mid \sigma) = \sigma^2 = \frac{25}{49} = 0.51
 \end{align*}
+\item
+With the definition of $p(\sigma) = 1$, the posterior is computed as:
+\begin{align*}
+p(\sigma \mid \D) &= \frac{p(\D \mid \sigma)p(\sigma)}{p(x)} \\
+&= \frac{p(\D \mid \sigma)}{p(x)} \\
+&= \frac{\sigma^5 \cdot (1 - \sigma)^2}{p(x)}
+\end{align*}
 
+\end{enumerate}
 
 
 
