@@ -139,9 +139,91 @@ Now we can evaluate the probability that the next two tosses are head:
 
 \end{enumerate}
 
+\subsection*{Exercise 2}
+\begin{enumerate}[(a)]
+\item
+To show
+\begin{align*}
+\sigma_{n}^2 \le \min{(\frac{\sigma^2}{n},\sigma_{0}^2)}
+\end{align*}
+we will at first solve the formula from section 3.4.1 of Duda et al. for $\sigma_{n}^2$:
+\begin{align*}
+    \frac{1}{\sigma_{n}^2} &= \frac{n}{\sigma^2}+ \frac{1}{\sigma_{0}^2}\\
+    \Leftrightarrow 1 &= \frac{\sigma_{0}^2n+\sigma^2}{\sigma^2\sigma_{0}^2} \cdot \sigma_{n}^2\\
+    \Leftrightarrow \sigma_{n}^2 &= \frac{\sigma^2\sigma_{0}^2}{\sigma_{0}^2n+\sigma^2}
+\end{align*}
+Now we can show $\sigma_{n}^2 \le \min{(\frac{\sigma^2}{n},\sigma_{0}^2)}$. We assume $\frac{\sigma^2}{n} \le \sigma_{0}^2$:
+\begin{align*}
+    \sigma_{n}^2 &\le \min{(\frac{\sigma^2}{n},\sigma_{0}^2)} \\
+    \Leftrightarrow \frac{\sigma^2\sigma_{0}^2}{\sigma_{0}^2n+\sigma^2} &\le \frac{\sigma^2}{n}\\
+    \Leftrightarrow \sigma^2\sigma_{0}^2 &\le \sigma^2\sigma_{0}^2 + \frac{\sigma^4}{n}\\
+    \Leftrightarrow \sigma^2\sigma_{0}^2 &\le \sigma^2 \cdot (\sigma_{0}^2 + \frac{\sigma^2}{n}\\
+    \Leftrightarrow \sigma_{0}^2 &\le \sigma_{0}^2 + \frac{\sigma^2}{n}\\
+    \Leftrightarrow 0 &\le \frac{\sigma^2}{n}
+\end{align*}
+This holds true since $n$ is the number of features and $\sigma^2$ is the variance of a Gaussian distribution $\mathcal{N}(\mu,\sigma^2)$, thus $n, \sigma > 0$.
 
+Now we assume the other case ($\sigma_{0}^2 \le \frac{\sigma^2}{n}$):
+\begin{align*}
+    \sigma_{n}^2 &\le \min{(\frac{\sigma^2}{n},\sigma_{0}^2)} \\
+    \Leftrightarrow \frac{\sigma^2\sigma_{0}^2}{\sigma_{0}^2n+\sigma^2} &\le \sigma_{0}^2\\
+    \Leftrightarrow \sigma^2\sigma_{0}^2 &\le \sigma_{0}^2 \cdot (\sigma_{0}^2n+\sigma^2)\\
+    \Leftrightarrow \sigma^2 &\le \sigma_{0}^2n+\sigma^2\\
+    \Leftrightarrow 0 &\le \sigma_{0}^2n
+\end{align*}
+This again holds true since $n > 0$ as stated above and $\sigma_{0}^2 > 0$ since it is the variance of the Gaussian distribution $\mathcal{N}(\mu_0,\sigma_{0}^2)$
+\item
+To show
+\begin{align*}
+    \min{(\mu_0,\hat{\mu}_n)} \le \mu_n \le \max{(\mu_0,\hat{\mu}_n)}
+\end{align*}
+we again first solve the formula from section 3.4.1 of Duda et al. for $\mu_n$, also using our $\sigma_{n}^2$ from above:
+\begin{align*}
+    \frac{\mu_n}{\sigma_{n}^2} &= \frac{n}{\sigma^2}\hat{\mu}_n+\frac{\mu_0}{\sigma_{0}^2}\\
+    \Leftrightarrow \mu_n &= (\frac{n}{\sigma^2}\hat{\mu}_n+\frac{\mu_0}{\sigma_{0}^2}) \cdot \sigma_{0}^2\\
+    \Leftrightarrow \mu_n &= (\frac{n}{\sigma^2}\hat{\mu}_n+\frac{\mu_0}{\sigma_{0}^2}) \cdot \frac{\sigma^2\sigma_{0}^2}{\sigma_{0}^2n+\sigma^2}\\
+    \Leftrightarrow \mu_n &= \frac{n\sigma_{0}^2}{n\sigma_{0}^2+\sigma^2}\hat{\mu}_n+\frac{\sigma^2}{n\sigma_{0}^2+\sigma^2}\mu_0
+\end{align*}
+Lets first assume $\mu_0 < \hat{\mu}_n$ (1) and show the first part of the inequality:
+\begin{align*}
+    \min{(\mu_0,\hat{\mu}_n)} &\le \mu_n \\
+    \Leftrightarrow \mu_0 &\le \mu_n\\
+    \Leftrightarrow \mu_0 &\le \frac{n\sigma_{0}^2}{n\sigma_{0}^2+\sigma^2}\hat{\mu}_n+\frac{\sigma^2}{n\sigma_{0}^2+\sigma^2}\mu_0\\
+    \Leftrightarrow \mu_0 \cdot (n\sigma_{0}^2+\sigma^2) &\le n\sigma_{0}^2\hat{\mu}_n + \sigma^2\mu_0\\
+    \Leftrightarrow \mu_0 n\sigma_{0}^2 &\le n\sigma_{0}^2\hat{\mu}_n\\
+    \Leftrightarrow \mu_0 &\le \hat{\mu}_n
+\end{align*}
+This hold true due to our assumption (1) from above. Let's show the second part of the inequality:
+\begin{align*}
+    \mu_n &\le \max{(\mu_0,\hat{\mu}_n)}\\
+    \Leftrightarrow \mu_n &\le \hat{\mu}_n\\
+    \Leftrightarrow \frac{n\sigma_{0}^2}{n\sigma_{0}^2+\sigma^2}\hat{\mu}_n+\frac{\sigma^2}{n\sigma_{0}^2+\sigma^2}\mu_0 &\le \hat{\mu}_n\\
+    \Leftrightarrow n\sigma_{0}^2\hat{\mu}_n+\sigma^2\mu_0 &\le \hat{\mu}_n \cdot (n\sigma_{0}^2+\sigma^2)\\
+    \Leftrightarrow \sigma^2\mu_0 &\le \hat{\mu}_n\sigma^2\\
+    \Leftrightarrow \mu_0 &\le \hat{\mu}_n
+\end{align*}
+This again holds true due to our assumption (1) from above.
 
-
+Now we'll assume that $\hat{\mu}_n < \mu_0$ (2) and show that our inequality still holds. We'll start with the first part again:
+\begin{align*}
+    \min{(\mu_0,\hat{\mu}_n)} &\le \mu_n \\
+    \Leftrightarrow \hat{\mu}_n &\le \mu_n\\
+    \Leftrightarrow \hat{\mu}_n &\le \frac{n\sigma_{0}^2}{n\sigma_{0}^2+\sigma^2}\hat{\mu}_n+\frac{\sigma^2}{n\sigma_{0}^2+\sigma^2}\mu_0\\
+    \Leftrightarrow \hat{\mu}_n \cdot (n\sigma_{0}^2+\sigma^2) &\le n\sigma_{0}^2\hat{\mu}_n + \sigma^2\mu_0\\
+    \Leftrightarrow \hat{\mu}_n \sigma^2 &\le \sigma^2\mu_0\\   
+    \Leftrightarrow \hat{\mu}_n &\le \mu_0
+\end{align*}
+This hold true due to our assumption (2) from above. Let's show the second part of the inequality:
+\begin{align*}
+    \mu_n &\le \max{(\mu_0,\hat{\mu}_n)}\\
+    \Leftrightarrow \mu_n &\le \mu_0\\
+    \Leftrightarrow \frac{n\sigma_{0}^2}{n\sigma_{0}^2+\sigma^2}\hat{\mu}_n+\frac{\sigma^2}{n\sigma_{0}^2+\sigma^2}\mu_0 &\le \mu_0\\
+     \Leftrightarrow n\sigma_{0}^2\hat{\mu}_n+\sigma^2\mu_0 &\le \mu_0 \cdot (n\sigma_{0}^2+\sigma^2)\\
+     \Leftrightarrow n\sigma_{0}^2\hat{\mu}_n &\le \mu_0n\sigma_{0}^2\\
+     \Leftrightarrow \hat{\mu}_n &\le \mu_0
+\end{align*}
+This again holds true due to our assumption (2) from above.
+\end{enumerate}
 
 
 \end{document}
