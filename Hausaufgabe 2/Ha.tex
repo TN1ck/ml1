@@ -52,26 +52,89 @@ Niklas Gebauer\>  340942
 \subsection*{Exercise 1}
 \begin{enumerate}[(a)]
 \item 
-With the definition $P(x_k \mid \sigma)$:
-$$P(x \mid \sigma) = \begin{cases} \sigma &\text{if} x = \text{head}\quad \\ 1 - \sigma &\text{if}\quad x = \text{tail} \end{cases}$$
-We can state the likelihood function $P(\D \mid \sigma)$:
+With the definition $P(x_k \mid \theta)$:
+$$P(x \mid \theta) = \begin{cases} \theta &\text{if} x = \text{head}\quad \\ 1 - \theta &\text{if}\quad x = \text{tail} \end{cases}$$
+We can state the likelihood function $P(\D \mid \theta)$:
 \begin{align*}
-	P(\D \mid \sigma) &= \prod_{k = i}^{n} P(x_k \mid \sigma) \\
-	&= \sigma^5 \cdot (1 - \sigma)^2
+	P(\D \mid \theta) &= \prod_{k = i}^{n} P(x_k \mid \theta) \\
+	&= \theta^5 \cdot (1 - \theta)^2
 \end{align*}
 \item
-The maximum likelihood solution for $\sigma$ is simply the sample mean:
-$$\sigma = \frac{\#\{ x = \text{head} \mid x \in D\}}{\#(D)} = \frac{5}{7}$$
-With this we can compute $P(x_8 = \text{head} ,\quad x_9 = \text{head} \mid \sigma)$:
+For this task we define:
 \begin{align*}
-P(x_8 = \text{head} ,\quad x_9 = \text{head} \mid \sigma) = P(x_8 = \text{head} \mid \sigma)P(x_9 = \text{head} \mid \sigma) = \sigma^2 = \frac{25}{49} = 0.51
+f(x) = P(\D \mid \theta) = \theta^5 \cdot (1 - \theta)^2
+\end{align*}
+To obtain the maximum likelihood solution $\hat{\theta}$ we can now use the standard procedure to find local minima and maxima in $f$. So we will at first set the first derivative to zero and solve for $\theta$:
+\begin{align*}
+f'(x) &= 0\\
+\Leftrightarrow (\theta^5 \cdot (1 - \theta)^2)' &= 0\\
+\Leftrightarrow (\theta^7 - 2\theta^6 + \theta^5)' &= 0\\
+\Leftrightarrow 7\theta^6 - 12\theta^5 + 5\theta^4 &= 0\\
+\Leftrightarrow \theta^4(7\theta^2-12\theta+5) &= 0\\
+\Leftrightarrow \theta &= 0 \vee 7\theta^2-12\theta+5 = 0
+\end{align*}
+So the first possible solution for $\hat{\theta}$ is $0$. Now we can use the p-q-formula to calculate the other solutions:
+\begin{align*}
+7\theta^2-12\theta+5 &= 0\\
+\Leftrightarrow \theta^2-\frac{12}{7}\theta+\frac{5}{7} &= 0\\
+\Leftrightarrow \frac{12}{14} \pm \sqrt{(\frac{12}{14})^2-\frac{5}{7}} &= \theta_1,\theta_2\\
+\Leftrightarrow \frac{6}{7} \pm \sqrt{\frac{1}{49}} &= \theta_1,\theta_2\\
+\Leftrightarrow 1 = \theta_1 &\wedge \frac{5}{7} = \theta_2
+\end{align*}
+So we have three possible solutions for $\hat{\theta} \in [0,1]$:
+\begin{align*}
+\hat{\theta_0} = 0 \\
+\hat{\theta_1} = 1 \\
+\hat{\theta_2} = \frac{5}{7}
+\end{align*}
+Now we check more derivatives to see which is the local maximum that we are looking for:
+\begin{align*}
+f''(0) = f^3(0) = f^4(0) = 0 \not= f^5(0) &\Rightarrow \text{saddle point at }\hat{\theta_0}\\
+f''(1) = 2 &\Rightarrow \text{minimum at }\hat{\theta_1}\\
+f''(\frac{5}{7}) = -\frac{1250}{2401} &\Rightarrow \text{maximum at }\hat{\theta_2}
+\end{align*}
+So the maximum likelihood solution for $\hat{\theta}$ is $\frac{5}{7}$, which does make sense since it is the number of heads compared to the total number of tosses (which is the sample mean, if we assume a random variable $X$ with $X = 1$ if $x_k = head$ and $X = 0$ otherwise):
+$$\hat{\theta} = \frac{\#\{ x = \text{head} \mid x \in D\}}{\#(D)} = \frac{5}{7}$$
+With this and the fact that each sample $x_k$ is generated independently we can compute $P(x_8 = \text{head} ,\quad x_9 = \text{head} \mid \hat{\theta})$:
+\begin{align*}
+P(x_8 = \text{head} ,\quad x_9 = \text{head} \mid \hat{\theta}) = P(x_8 = \text{head} \mid \hat{\theta})P(x_9 = \text{head} \mid \hat{\theta}) = \hat{\theta}^2 = \frac{25}{49} \approx 0.51
 \end{align*}
 \item
-With the definition of $p(\sigma) = 1$, the posterior is computed as:
+First we want to compute the posterior destribution $p(\theta \mid \D)$. With our prior distribution
 \begin{align*}
-p(\sigma \mid \D) &= \frac{p(\D \mid \sigma)p(\sigma)}{p(x)} \\
-&= \frac{p(\D \mid \sigma)}{p(x)} \\
-&= \frac{\sigma^5 \cdot (1 - \sigma)^2}{p(x)}
+p(\theta) =
+    \begin{cases}
+        1    & \text{if } 0\le \theta \le 1\\
+        0    & \text{else}
+    \end{cases}
+\end{align*}
+we get:
+\begin{align*}
+    p(\theta \mid \D) &= \frac{p(\D \mid \theta)p(\theta)}{\int p(\D \mid \theta)p(\theta) d\theta} \\
+    &= \alpha \prod_{k = 1}^{7} P(x_k \mid \theta) p(\theta)\\
+    &=
+    \begin{cases}
+        \alpha \cdot \theta^5 \cdot (1 - \theta)^2    &\text{if } 0\le \theta \le 1\\0    & \text{else}
+    \end{cases}        
+\end{align*}
+with:
+\begin{align*}
+    \alpha &= \frac{1}{\int \limits_{0}^1 \prod_{k = 1}^{7} P(x_k \mid \theta) p(\theta) d\theta}\\
+    &= \frac{1}{\int \limits_{0}^1 \prod_{k = 1}^{7} P(x_k \mid \theta) d\theta}\\
+    &= \frac{1}{\int \limits_{0}^1  \theta^5 \cdot (1 - \theta)^2 d\theta}\\
+    &= \frac{1}{\int \limits_{0}^1 \theta^7 - 2\theta^6 + \theta^5 d\theta}\\
+    &= \frac{1}{[\frac{\theta^8}{8}-\frac{2\cdot\theta^7}{7}+\frac{\theta^6}{6}]_{0}^1}\\
+    &= \frac{1}{\frac{28}{168}-\frac{48}{168}+\frac{21}{168}}\\   
+    &= \frac{1}{\frac{1}{168}} = 168
+\end{align*}
+Now we can evaluate the probability that the next two tosses are head:
+\begin{align*}
+\int P(x_8 = \text{head}, x_9 = \text{head} \mid \theta) p(\theta \mid D) d\theta &= \int P(x_8 = \text{head} \mid \theta) P(x_9 = \text{head} \mid \theta) p(\theta \mid D) d\theta\\
+&= \int \limits_{0}^1 \theta^2 \cdot \alpha \cdot \theta^5\cdot (1-\theta)^2 d\theta\\
+&= 168 \int \limits_{0}^1 \theta^7 (1-\theta)^2 d\theta\\
+&= 168 \int \limits_{0}^1 \theta^9 - 2\theta^8+\theta^7 d\theta\\
+&= 168 \cdot [\frac{\theta^{10}}{10}-\frac{2\cdot\theta^9}{9}+\frac{\theta^8}{8}]_{0}^1\\
+&= 168 \cdot \frac{1}{360} = \frac{7}{15} \approx 0.4\overline{6}
 \end{align*}
 
 \end{enumerate}
