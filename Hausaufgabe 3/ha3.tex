@@ -34,6 +34,7 @@ top=2.0cm, bottom=2.0cm]{geometry}
 \newcommand{\A}{\mathcal{A}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\D}{\mathcal{D}}
+\newcommand{\tr}{\text{tr}}
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 \usepackage{mathpazo}
 
@@ -153,8 +154,24 @@ $\theta_2$ is rather close to c since it centers all the points around c. Thus i
 \end{enumerate}
 
 \subsection*{Exercise 2}
+The Scatter-matrix $S$ is defined as $$\sum_{k = 1}^{n} (x_k + m)(x_k + m)^T$$ where $m$ is defined as the mean $$m = \frac{1}{n}\sum_{k=1}^{n}x_k$$. 
 \begin{enumerate}[(a)]
 \item
+It is to show, that the trace $\tr$ of $S$ is an upper bound for $\lambda_1$ which denotes the highest eigenvalue of $S$, the trace of S is defined as $\sum^d_{i=1} S_{ii}$.
+
+We use three facts to prove this:
+\begin{enumerate}[1.]
+    \item \textbf{$S$ is symmetric} \\
+    It is easy to see, that $S$ is a symmetric matrix - a vector multiplied by its transposed self creates always a symmetric matrix ($AA^T = (AA^T)^T \Leftrightarrow (A^T)^TA^T \Leftrightarrow AA^T$), $(x_k + m)(x_k + m)$ results in a symmetric matrix therefore as well. The sum of two symmetric matrices results in another symmetric matrix, $S$ is therefore symmetric.
+    \item \textbf{$S$ can be decomposed into $Q\Lambda Q^T$ where $\Lambda$ is a diagonal with the eigevalues of $A$ as values.}
+    \item $\tr(AQA^T) = \tr(Q)$ when $A$ is orthogonal \\
+    $\tr(AQA^T) = \tr((AQ)A^T) = \tr(A^T(AQ)) = \tr(Q)$
+\end{enumerate}
+
+\begin{align*}
+\tr(S) = \tr(Q\Lambda Q^T) = \tr(\Lambda) = \sum_{k = 1}^{d} \lambda_k
+\end{align*}
+The trace of $S$ is therefore the sum of all it's Eigenvalues, which is trivially an upper-bound for the largest Eigenvalue $\lambda_1$. 
 \item
 \item
 \item
