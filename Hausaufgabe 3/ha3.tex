@@ -125,10 +125,44 @@ Let's plug this into the second entry to solve for $\lambda$:
     \Leftrightarrow \frac{1}{(n+\lambda)^2}([\sum_{k = i}^{n}x_k] - n c)^T ([\sum_{k = i}^{n}x_k] - n c) &= 1\\
     \Leftrightarrow \|[\sum_{k = i}^{n}x_k - c]\|^2 &= (\lambda + n)^2\\
     \Leftrightarrow \|[\sum_{k = i}^{n}x_k - c]\|^2 &= \lambda^2 + 2n\lambda +n^2\\
-    \Leftrightarrow 0 &= \lambda^2 + 2n\lambda + n^2 - \|[\sum_{k = i}^{n}x_k - c]\|^2
+    \Leftrightarrow 0 &= \lambda^2 + 2n\lambda + n^2 - \|[\sum_{k = i}^{n}x_k - c]\|^2 \\
+    \overset{pq-formula}{\Rightarrow } \frac{-2n}{2} \pm \sqrt{\frac{2n}{2}^2-(n^2 - \|[\sum_{k = i}^{n}x_k - c]\|^2)} &= \lambda_{1,2}\\
+    \Leftrightarrow -n \pm \sqrt{\|[\sum_{k = i}^{n}x_k - c]\|^2} &= \lambda_{1,2}\\
+    \Rightarrow -n + \|[\sum_{k = i}^{n}x_k - c]\| &= \lambda_1\\
+    \Rightarrow-n -  \|[\sum_{k = i}^{n}x_k - c]\| &= \lambda_2
 \end{align*}
+We can now compute two solutions for $\theta$ using $\lambda_1$ and $\lambda_2$:\\ \\
+$\lambda_1:\\$
+\begin{align*}
+	\theta_1 &= \frac{1}{n+\lambda_1} ([\sum_{k = i}^{n}x_k] + \lambda_1 c)\\
+	&=  \frac{1}{n+( -n + \|[\sum_{k = i}^{n}x_k - c]\|)} ([\sum_{k = i}^{n}x_k] +( -n + \|[\sum_{k = i}^{n}x_k - c]\|) c)\\
+	&= \frac{1}{\|[\sum_{k = i}^{n}x_k - c]\|}  ([\sum_{k = i}^{n}x_k] -nc + \|[\sum_{k = i}^{n}x_k - c]\| c)\\
+	&=  \frac{1}{\|[\sum_{k = i}^{n}x_k - c]\|} [\sum_{k = i}^{n}x_k-c] + c\\
+\end{align*}\\ \\
+$\lambda_2:\\$
+\begin{align*}
+	\theta_2 &= \frac{1}{n+\lambda_2} ([\sum_{k = i}^{n}x_k] + \lambda_2 c)\\
+	&=  \frac{1}{n+( -n - \|[\sum_{k = i}^{n}x_k - c]\|)} ([\sum_{k = i}^{n}x_k] +( -n - \|[\sum_{k = i}^{n}x_k - c]\|) c)\\
+	&= -\frac{1}{\|[\sum_{k = i}^{n}x_k - c]\|}  ([\sum_{k = i}^{n}x_k] -nc - \|[\sum_{k = i}^{n}x_k - c]\| c)\\
+	&=  \frac{1}{\|[\sum_{k = i}^{n}x_k - c]\|} [\sum_{k = i}^{n}c-x_k] + c\\
+\end{align*}
+This time we again see something similar to the mean, but $\theta$ is dependend on $c$. In both formulas we have a normalized vector (length = 1) and add up c, so that the constraint holds (if we subtract c again we will have a vector thatstill has length one). Since we know from the objective without constraint that the empirical mean is the minimum, it's clear that $\theta_1$ is the minimizing parameter: it stays close to the (normalized mean) but every data point gets a little offset of -c so that the latter addition of c doesn't take the result too far away from the empirical mean.
+
+$\theta_2$ is rather close to c since it centers all the points around c. Thus it won't yield as small results in our objective function as $\theta_1$, which is closer to the empirical mean.
 
 \end{enumerate}
 
-
+\subsection*{Exercise 2}
+\begin{enumerate}[(a)]
+\item
+\item
+\item
+\item
+\end{enumerate}
+\subsection*{Exercise 3}
+\begin{enumerate}[(a)]
+\item
+\item
+\item (*bonus)
+\end{enumerate}
 \end{document}
