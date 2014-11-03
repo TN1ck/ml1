@@ -1,0 +1,134 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\setlength{\parindent}{0cm}
+\usepackage{setspace}
+\usepackage{mathpazo}
+\usepackage{graphicx}
+\usepackage{wasysym} 
+\usepackage{booktabs}
+\usepackage{enumerate}
+\usepackage{verbatim}
+\usepackage{microtype}
+\usepackage{siunitx}
+\usepackage{cleveref}
+\usepackage[colorlinks=false, pdfborder={0 0 0}]{hyperref}
+\usepackage{paralist}
+\usepackage{pst-all}
+\usepackage{pstricks}
+\usepackage{pst-node}
+\usepackage{tikz}
+\usepackage{tkz-berge}
+\usetikzlibrary{trees,petri,decorations,arrows,automata,shapes,shadows,positioning,plotmarks}
+\usepackage[a4paper,
+left=3.0cm, right=3.0cm,
+top=2.0cm, bottom=2.0cm]{geometry}
+\usepackage{fullpage}
+\usepackage[german]{babel}
+%\usepackage{pst-all}
+%\usepackage{pstricks}
+\setlength{\unitlength}{1cm}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\usepackage{mathpazo}
+
+\author{Tom Nick, Niklas Gebauer}
+\title{Machine Learning}
+\begin{document}
+\begin{center}
+\Large{\textsc{Machine Learning 1: Assignment 3}} \\
+\end{center}
+
+\begin{tabbing}
+Tom Nick \hspace{0.9cm}\= 340528\\
+Niklas Gebauer\>  340942 
+\end{tabbing}
+
+\subsection*{Exercise 1}
+\begin{enumerate}[(a)]
+\item
+In the following we want to minimize the objective function
+\begin{align*}
+    J(\theta) = \sum_{k = i}^{n} \|\theta-x_k\|^2
+\end{align*}
+subject to the constraint $\theta^T b = 0$, where $x_1, ..., x_k, \theta, b \in \mathbb{R}^d$.
+
+Therefore we will define the Lagrangian function and set its gradient to zero in order to solve for $\lambda$ and $\theta$:
+
+\begin{align*}
+    \mathcal{L}(\theta,\lambda) &= J(\theta) + \lambda\theta^T b = \sum_{k = i}^{n} \|\theta-x_k\|^2 + \lambda\theta^T b \\
+    \nabla\mathcal{L} &= \left(
+        \begin{array}{c}
+            [\sum_{k = i}^{n} 2(\theta-x_k)] + \lambda b\\
+            \theta^T b\\
+        \end{array}
+    \right) \overset{!}{=} \vec{0} \\
+\end{align*}
+We will at first solve the first entry of our gradient for $\theta$:
+\begin{align*}
+    [\sum_{k = i}^{n} 2(\theta-x_k)] + \lambda b &= 0 \\
+    \Leftrightarrow 2n\theta-2[\sum_{k = i}^{n}x_k] + \lambda b &= 0\\
+    \Leftrightarrow 2[\sum_{k = i}^{n}x_k] - \lambda b &= 2n\theta\\
+    \Leftrightarrow \frac{1}{n}[\sum_{k = i}^{n}x_k] - \frac{1}{2n}\lambda b &= \theta
+\end{align*}
+Let's plug this into the second entry to solve for $\lambda$:
+\begin{align*}
+    \theta^T b &= 0 \\
+    \Leftrightarrow (\frac{1}{n}[\sum_{k = i}^{n}x_k] - \frac{\lambda}{2n}b)^T b &= 0\\
+    \Leftrightarrow (\frac{1}{n}[\sum_{k = i}^{n}x_k^T] - \frac{\lambda}{2n} b^T) b &= 0\\
+    \Leftrightarrow \frac{1}{n}[\sum_{k = i}^{n}x_k^T]b - \frac{\lambda}{2n} b^T b &= 0\\    
+    \Leftrightarrow \frac{1}{n}[\sum_{k = i}^{n}x_k^T]b &= \frac{\lambda}{2n} b^T b\\ 
+    \Leftrightarrow \frac{2}{b^T b}[\sum_{k = i}^{n}x_k^T]b &= \lambda
+\end{align*}
+Finally, we can plug this $\lambda$ into our formula describing $\theta$, yielding the result:
+\begin{align*}
+    \theta &= \frac{1}{n}[\sum_{k = i}^{n}x_k] - \frac{1}{2n}\lambda b \\
+    \Leftrightarrow \theta &= \frac{1}{n}[\sum_{k = i}^{n}x_k] - \frac{1}{2n}(\frac{2}{b^T b}[\sum_{k = i}^{n}x_k^T]b) b \\
+    \Leftrightarrow \theta &= \frac{1}{n}([\sum_{k = i}^{n}x_k] - \frac{[\sum_{k = i}^{n}x_k^Tb]}{b^T b} b) \\
+\end{align*}
+
+Similar to the minimal solution for $\theta$ of the unconstrained objective, we again find the the empirical mean in our solution. But this time we subtract a scaled version of the vector $b$. This means, that the solution still has to lie close to the empirical mean. If we imagine a plot with contour lines of $J(\theta)$ there has to be a 'valley' which is the empirical mean and a line cutting the surface which specifies the points where our constraint holds. The second term of our solution will move $\theta$ from total minimum (the empirical mean) to the point where the line lies deepest in the plane and where the lines and $J$'s gradient both are perpendicular to the line. So we have the minimal solution that still fulfills the constraint.
+
+\item
+Now we will repeat the same procedure for the objective above with a different constraint
+
+($\|\theta-c\|^2 = 1$, $c \in \mathbb{R}^d$):
+\begin{align*}
+    \mathcal{L}(\theta,\lambda) &= J(\theta) + \lambda \|\theta - c\|^2 - \lambda \\
+    \nabla\mathcal{L} &= \left(
+        \begin{array}{c}
+            [\sum_{k = i}^{n} 2(\theta-x_k)] + \lambda 2(\theta - c)\\
+            \|\theta - c\|^2 - 1\\
+        \end{array}
+    \right) \overset{!}{=} \vec{0} \\
+\end{align*}
+Solve the first entry for $\theta$:
+\begin{align*}
+    [\sum_{k = i}^{n} 2(\theta-x_k)] + \lambda 2(\theta - c) &= 0 \\
+    \Leftrightarrow 2n\theta - 2 [\sum_{k = i}^{n}x_k] + 2\lambda \theta - 2\lambda c &= 0 \\
+    \Leftrightarrow 2n\theta + 2\lambda \theta &= 2 [\sum_{k = i}^{n}x_k] + 2\lambda c \\
+    \Leftrightarrow \theta = \frac{1}{n+\lambda} ([\sum_{k = i}^{n}x_k] + \lambda c)\\ 
+\end{align*}
+Let's plug this into the second entry to solve for $\lambda$:
+\begin{align*}
+    \|\theta - c\|^2 - 1 &= 0 \\
+    \Leftrightarrow \| \frac{1}{n+\lambda} ([\sum_{k = i}^{n}x_k] + \lambda c) - c\|^2 - 1 &= 0\\
+    \Leftrightarrow \| \frac{1}{n+\lambda} [\sum_{k = i}^{n}x_k] + \frac{\lambda}{n+\lambda} c - \frac{n+\lambda}{n+\lambda}c\|^2 - 1 &= 0\\
+    \Leftrightarrow \| \frac{1}{n+\lambda} [\sum_{k = i}^{n}x_k] - \frac{n}{n+\lambda} c\|^2 &= 1\\
+    \Leftrightarrow \| \frac{1}{n+\lambda} ([\sum_{k = i}^{n}x_k] - n c)\|^2 &= 1\\
+    \Leftrightarrow  (\frac{1}{n+\lambda} ([\sum_{k = i}^{n}x_k] - n c))^T (\frac{1}{n+\lambda} ([\sum_{k = i}^{n}x_k] - n c)) &= 1\\
+    \Leftrightarrow \frac{1}{(n+\lambda)^2}([\sum_{k = i}^{n}x_k] - n c)^T ([\sum_{k = i}^{n}x_k] - n c) &= 1\\
+    \Leftrightarrow \|[\sum_{k = i}^{n}x_k - c]\|^2 &= (\lambda + n)^2\\
+    \Leftrightarrow \|[\sum_{k = i}^{n}x_k - c]\|^2 &= \lambda^2 + 2n\lambda +n^2\\
+    \Leftrightarrow 0 &= \lambda^2 + 2n\lambda + n^2 - \|[\sum_{k = i}^{n}x_k - c]\|^2
+\end{align*}
+
+\end{enumerate}
+
+
+\end{document}
