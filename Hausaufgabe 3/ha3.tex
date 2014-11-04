@@ -162,7 +162,7 @@ It is to show, that the trace $\tr$ of $S$ is an upper bound for $\lambda_1$ whi
 We use four facts to prove this:
 \begin{enumerate}[1.]
     \item \textbf{$S$ is symmetric} \\
-    It is easy to see, that $S$ is a symmetric matrix - a vector multiplied by its transposed self creates always a symmetric matrix ($AA^T = (AA^T)^T \Leftrightarrow (A^T)^TA^T \Leftrightarrow AA^T$), $(x_k + m)(x_k + m)$ results in a symmetric matrix therefore as well. The sum of two symmetric matrices results in another symmetric matrix, $S$ is therefore symmetric.
+    It is easy to see, that $S$ is a symmetric matrix - a vector multiplied by its transposed self creates always a symmetric matrix ($AA^T = (AA^T)^T \Leftrightarrow AA^T =  (A^T)^TA^T \Leftrightarrow AA^T =  AA^T$), $(x_k - m)(x_k - m)^T$ results in a symmetric matrix therefore as well. The sum of two symmetric matrices results in another symmetric matrix, $S$ is therefore symmetric.
     \item \textbf{$S$ is positive semidefinite}\\
     For each vector $a \in \mathbb{R}^d, a^TSa \ge 0$:\\
     \begin{align*}
@@ -171,28 +171,51 @@ We use four facts to prove this:
         &= \sum_{k = 1}^{n} ((x_k - m)^Ta)^T((x_k - m)^Ta)\\
         &= \sum_{k = 1}^{n} ((x_k - m)^Ta)^2
     \end{align*}
+    Since $((x_k - m)^Ta)^2 \ge 0$ it holds that $a^TSa \ge 0$.
     \item \textbf{Thus $S$ can be decomposed into $Q\Lambda Q^T$ where $\Lambda$ is a diagonal with the eigevalues of $S$ as values.} %thought it should be the eigenvalues of S instead of the eigenvalues of A..?
     \item $\tr(AQA^T) = \tr(Q)$ when $A$ is orthogonal \\
     $\tr(AQA^T) = \tr((AQ)A^T) = \tr(A^T(AQ)) = \tr(Q)$
-Since $((x_k - m)^Ta)^2 \ge 0$ it holds that $a^TSa \ge 0$.
+
 \end{enumerate}
 With 3. and 4. we get:
 \begin{align*}
 \tr(S) = \tr(Q\Lambda Q^T) = \tr(\Lambda) = \sum_{k = 1}^{d} \lambda_k
 \end{align*}
-The trace of $S$ is therefore the sum of all its eigenvalues, which is trivially an upper-bound for the largest eigenvalue $\lambda_1$, if we consider 4: Since S is positive semidefinite, all of its eigenvalues are positive. So the largest eigenvalue $\lambda_1$ can't be larger than $tr(S) = \sum^d_{i=1} S_{ii}$.
-\item As the upper bound is the sum of all eigenvalues, it is tighter the smaller the eigenvalues $\lambda_2 \dots \lambda_d$ relativly to the eigenvalue $\lambda_1$ are. Especially it is the same if all other eigenvalues are zero. This means for the data, that only one feature is really significant for the variance of the data. If all entries for the other features are identical, the bound will be tight.
+The trace of $S$ is therefore the sum of all its eigenvalues, which is trivially an upper-bound for the largest eigenvalue $\lambda_1$, if we consider fact 2: Since S is positive semidefinite, all of its eigenvalues are positive. So the largest eigenvalue $\lambda_1$ can't be larger than $tr(S) = \sum^d_{i=1} S_{ii}$.
+\item As the upper bound is the sum of all eigenvalues, it is tighter the smaller the eigenvalues $\lambda_2 \dots \lambda_d$ relativly to the eigenvalue $\lambda_1$ are. Especially it is the same if all other eigenvalues are zero. This means for the data, that only one feature is really significant for the variance of the data. If all entries for the other features are identical among the different data points, the bound will be tight.
 \item
-The scatter Matrix is nothing else than the covariance-matrix ($Cov(X)$) times $n$. We are now using the eigenvalue-decomposition of both matrices to show, that the eigenvalues of $S$, are the ones of the covariance-matrix scaled by $n$:
-$$S = n \cdot Cov(X) = n \cdot Q\Lambda Q^T = Q(n \cdot \Lambda)Q^T = Q\overline{\Lambda}Q^T$$
-It is known that the diagonal-elements of the covariance-matrix are equal to the variance of the respective dimension of $X$.
+Let's consider the data's covariance matrix, which ist given as:
+\begin{align*}
+    Cov = \frac{1}{n} \sum_{k = 1}^{n} (x_k - m)(x_k - m)^T
+\end{align*}
+It's obvious that the scatter matrix is a scaled (by $n$) version of the covariance matrix: $n \cdot Cov = n \frac{1}{n} \sum_{k = 1}^{n} (x_k - m)(x_k - m)^T = \sum_{k = 1}^{n} (x_k - m)(x_k - m)^T = S$.\\
 
-The Eigenvector of the largest eigenvalue of $Cov(X)$ points in the direction of the biggest Variance of $X$ and is also equal to the Variance of this direction. This means that the Variances along the diagonal of $Cov(X)$ are always smaller or equal to the largest eigenvalue of $Cov(X)$.
+The same facts that hold for $S$ as in 2 a) also hold for $Cov$: it is symmetric and positive semidefinite and thus decomposable as shown above.
 
-Because the values of the diagonal of $S$ and its eigenvalues are the same of $Cov(X)$, just scaled by $n$ (see above), the same thing is true for $S$. Therefore, the maximum element the diagonal of $S$ is a lower bound of $\lambda_1$.
+It is known that the diagonal elements of the covariance-matrix are equal to the variance of the respective dimension of our data set.
+Thus the diagonal elements of $S$ are the variance of the particular dimension scaled by $n$.
+
+The Eigenvector of the largest eigenvalue of $Cov$ points in the direction of the biggest variance of our data and the corresponding eigenvalue $\lambda_{max}$ is equal to the variance of the data in this direction.
+
+We are now using the eigenvalue-decomposition of both matrices to show that the eigenvalues of $S$ are the ones of the covariance-matrix scaled by $n$:
+$$S = n \cdot Cov = n \cdot Q\Lambda Q^T = Q(n \cdot \Lambda)Q^T = Q\overline{\Lambda}Q^T$$
+
+So now we know that the largest eigenvalue $\lambda_1$ of $S$ is equal to the largest eigenvalue $\lambda_{max}$ of $Cov$ scaled by $n$: $\lambda_1 = n\cdot \lambda_{max}$.
+
+Let $x_k^i, m^i$ be the i'th entry of vector $x_k, m$. We can show with proof by contradiction, that $\lambda_1 \ge \max_{i=1}^d S_{ii}$. To show that, we assume $\max_{i=1}^d S_{ii} = S_{tt}$ and $\lambda_1 < S_{tt}$:
+\begin{align*}
+    \lambda_1 &< S_{tt}\\
+    \Leftrightarrow \lambda_1 &< \sum_{k = 1}^{n}(x_k^t-m^t)(x_k^t-m^t)\\
+    \Leftrightarrow n \cdot \lambda_{max} &< \sum_{k = 1}^{n}(x_k^t-m^t)(x_k^t-m^t)\\
+    \Leftrightarrow \lambda_{max} &< \frac{1}{n}\sum_{k = 1}^{n}(x_k^t-m^t)^2\\
+    \Leftrightarrow \lambda_{max} &< E\{(x_k^t-m^t)^2\}\\
+    \Leftrightarrow \lambda_{max} &< Var(x_k^t)\\
+\end{align*}
+This leads to a contradiction, since it means that the largest eigenvalue $\lambda_{max}$ corresponding to the largest variance in our data is supposed to be smaller than the variance of our data in dimension $t$.
+
+So we can conclude $ \lambda_{max} \ge Var(x_k^t)$ and thus also $ n\cdot\lambda_{max} = \lambda_1 \ge n\cdot Var(x_k^t) = S_{tt} = max_{i=1}^d S_{ii}$.
 \item
-The values of the diagonal are proportional to the variances of each dimension of $X$. The more the eigenevector of $\lambda_1$ points directly along one axis - i.e. the more the maximum variance of $X$ lies in one dimension, the tighter the bound will be.
-The best case, i.e. whet the lower-bound matches $\lambda_1$ perfectly would be, if the eigenvector to it would be a unit-vector along 
+The bound will be tight if the maximum variance in the data is aligned along one particular dimension. An example for such a case would be the same data set as in 2 c): if the entries of each dimension except for one are identical for all data points, the bound will be tight.
 \end{enumerate}
 \subsection*{Exercise 3}
 \begin{enumerate}[(a)]
