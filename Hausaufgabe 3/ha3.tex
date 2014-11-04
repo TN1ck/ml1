@@ -163,9 +163,6 @@ We use four facts to prove this:
 \begin{enumerate}[1.]
     \item \textbf{$S$ is symmetric} \\
     It is easy to see, that $S$ is a symmetric matrix - a vector multiplied by its transposed self creates always a symmetric matrix ($AA^T = (AA^T)^T \Leftrightarrow (A^T)^TA^T \Leftrightarrow AA^T$), $(x_k + m)(x_k + m)$ results in a symmetric matrix therefore as well. The sum of two symmetric matrices results in another symmetric matrix, $S$ is therefore symmetric.
-    \item \textbf{Thus $S$ can be decomposed into $Q\Lambda Q^T$ where $\Lambda$ is a diagonal with the eigevalues of $S$ as values.} %thought it should be the eigenvalues of S instead of the eigenvalues of A..?
-    \item $\tr(AQA^T) = \tr(Q)$ when $A$ is orthogonal \\
-    $\tr(AQA^T) = \tr((AQ)A^T) = \tr(A^T(AQ)) = \tr(Q)$
     \item \textbf{$S$ is positive semidefinite}\\
     For each vector $a \in \mathbb{R}^d, a^TSa \ge 0$:\\
     \begin{align*}
@@ -174,14 +171,23 @@ We use four facts to prove this:
         &= \sum_{k = 1}^{n} ((x_k - m)^Ta)^T((x_k - m)^Ta)\\
         &= \sum_{k = 1}^{n} ((x_k - m)^Ta)^2
     \end{align*}
+    \item \textbf{Thus $S$ can be decomposed into $Q\Lambda Q^T$ where $\Lambda$ is a diagonal with the eigevalues of $S$ as values.} %thought it should be the eigenvalues of S instead of the eigenvalues of A..?
+    \item $\tr(AQA^T) = \tr(Q)$ when $A$ is orthogonal \\
+    $\tr(AQA^T) = \tr((AQ)A^T) = \tr(A^T(AQ)) = \tr(Q)$
 Since $((x_k - m)^Ta)^2 \ge 0$ it holds that $a^TSa \ge 0$.
 \end{enumerate}
-With 2. and 3. we get:
+With 3. and 4. we get:
 \begin{align*}
 \tr(S) = \tr(Q\Lambda Q^T) = \tr(\Lambda) = \sum_{k = 1}^{d} \lambda_k
 \end{align*}
+<<<<<<< HEAD
 The trace of $S$ is therefore the sum of all its eigenvalues, which is trivially an upper-bound for the largest eigenvalue $\lambda_1$, if we consider 4: Since S is positive semidefinite, all of its eigenvalues are positive. So the largest eigenvalue $\lambda_1$ can't be larger than $tr(S) = \sum^d_{i=1} S_{ii}$.
 \item As the upper bound is the sum of all eigenvalues, it is tighter the smaller the eigenvalues $\lambda_2 \dots \lambda_d$ relativly to the eigenvalue $\lambda_1$ are. Especially it is the same if all other eigenvalues are zero. This means for the data, that only one feature is really significant for the variance of the data. If all entries for the other features are identical, the bound will be tight.
+=======
+The trace of $S$ is therefore the sum of all its eigenvalues, which is trivially an upper-bound for the largest Eigenvalue $\lambda_1$, if we consider 2: Since S is positive semidefinite, all of its eigenvalues are positive. So the largest eigenvalue $\lambda_1$ can't be larger than $tr(S) = \sum^d_{i=1} S_{ii}$.
+\item As the upper bound is the sum of all eigenvalues, it is tighter the smaller the eigenvalues $\lambda_2 \dots \lambda_d$ relativly to the eigenvalue $\lambda_1$ are. Especially it is the same as $\lambda_1$ if all other eigenvalues are zero. This means for the data, that only one feature is really significant for the variance of the data. If all entries for the other features are identical, the bound will be tight.
+\item 
+>>>>>>> f53cc6b4963bc04f1d654f9a8d7285dc890a152c
 \item
 The scatter Matrix is nothing else than the covariance-matrix ($Cov(X)$) times $n$. We are now using the eigenvalue-decomposition of both matrices to show, that the eigenvalues of $S$, are the ones of the covariance-matrix scaled by $n$:
 $$S = n \cdot Cov(X) = n \cdot Q\Lambda Q^T = Q(n \cdot \Lambda)Q^T = Q\overline{\Lambda}Q^T$$
