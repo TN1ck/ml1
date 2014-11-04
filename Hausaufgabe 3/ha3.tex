@@ -163,7 +163,7 @@ We use three facts to prove this:
 \begin{enumerate}[1.]
     \item \textbf{$S$ is symmetric} \\
     It is easy to see, that $S$ is a symmetric matrix - a vector multiplied by its transposed self creates always a symmetric matrix ($AA^T = (AA^T)^T \Leftrightarrow (A^T)^TA^T \Leftrightarrow AA^T$), $(x_k + m)(x_k + m)$ results in a symmetric matrix therefore as well. The sum of two symmetric matrices results in another symmetric matrix, $S$ is therefore symmetric.
-    \item \textbf{$S$ can be decomposed into $Q\Lambda Q^T$ where $\Lambda$ is a diagonal with the eigevalues of $A$ as values.}
+    \item \textbf{$S$ can be decomposed into $Q\Lambda Q^T$ where $\Lambda$ is a diagonal with the eigevalues of $S$ as values.} %thought it should be the eigenvalues of S instead of the eigenvalues of A..?
     \item $\tr(AQA^T) = \tr(Q)$ when $A$ is orthogonal \\
     $\tr(AQA^T) = \tr((AQ)A^T) = \tr(A^T(AQ)) = \tr(Q)$
 \end{enumerate}
@@ -173,7 +173,7 @@ We use three facts to prove this:
 \end{align*}
 The trace of $S$ is therefore the sum of all it's Eigenvalues, which is trivially an upper-bound for the largest Eigenvalue $\lambda_1$. 
 \item As the upper bound is the sum of all Eigenvalues, it is tighter the smaller the Eigenvalues $\lambda_2 \dots \lambda_d$ relativly to the Eigenvalue $\lambda_1$ are. This means for the data, that only one feature is really significant for the variance of the data.
-\item
+\item 
 \item
 \end{enumerate}
 \subsection*{Exercise 3}
